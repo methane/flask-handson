@@ -83,13 +83,11 @@ Python でクラスのインスタンス化するときは、単にクラスを�
 `__name__` というのは、自動的に定義される変数で、現在のファイルのモジュール名が入ります。
 ファイルをスクリプトとして直接実行した場合、 `__name__` は `__main__` になります。
 
-.. note::
-
-    *from ... import ...* 構文
-
-    `import flask` の代わりに、 `from flask import Flask` と書くと、 `flask.Flask` クラスを
-    `Flask` という変数に代入します。この場合、 `app = flask.Flask(__name__)` の代わりに
-    `app = Flask(__name__)` と書くことができます。
+> *from ... import ...* 構文
+> 
+> `import flask` の代わりに、 `from flask import Flask` と書くと、 `flask.Flask` クラスを
+> `Flask` という変数に代入します。この場合、 `app = flask.Flask(__name__)` の代わりに
+> `app = Flask(__name__)` と書くことができます。
 
 `@app.route('/')` という行は、 `app` に対して `/` というURLに対応するアクションを
 登録しています。
