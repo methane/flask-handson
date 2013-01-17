@@ -50,7 +50,8 @@ $ pip install Flask
 
 Flask は簡単なWebアプリなら1ファイルで全て実装できます。
 
-```python:hello.py
+hello.py
+```python
 import flask
 
 app = flask.Flask(__name__)
