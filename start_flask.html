@@ -1,0 +1,207 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Flask を始めよう &mdash; Flask Handson 1 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="Flask Handson 1 documentation" href="index.html" />
+    <link rel="prev" title="Flask ハンズオン" href="index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="index.html" title="Flask ハンズオン"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">Flask Handson 1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="flask">
+<h1>Flask を始めよう<a class="headerlink" href="#flask" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="id1">
+<h2>環境構築<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="python">
+<h3>Python<a class="headerlink" href="#python" title="Permalink to this headline">¶</a></h3>
+<p><a class="reference external" href="http://phpy.readthedocs.org/en/latest/install.html">http://phpy.readthedocs.org/en/latest/install.html</a></p>
+<p>を参照してください。</p>
+</div>
+<div class="section" id="id2">
+<h3>Flask<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<p>Flask もインストールしておきます。</p>
+<p>Windows:</p>
+<div class="highlight-python"><pre>&gt; python -m easy_install Flask</pre>
+</div>
+<p>Linux / Mac OS X:</p>
+<div class="highlight-python"><pre>$ pip install Flask</pre>
+</div>
+</div>
+<div class="section" id="id3">
+<h3>テキストエディタ<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
+<p>プログラミング向けのテキストエディタを用意してください。
+文字コードには utf-8 を使えるものにしてください。</p>
+<p>できれば、インデントはスペース4つにしておいてください。</p>
+</div>
+</div>
+<div class="section" id="hello-world">
+<h2>Hello, World!<a class="headerlink" href="#hello-world" title="Permalink to this headline">¶</a></h2>
+<p>Flask は簡単なWebアプリなら1ファイルで全て実装できます。</p>
+<p><a class="reference external" href="src/hello.py">ダウンロード</a></p>
+<div class="highlight-python"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10</pre></div></td><td class="code"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">flask</span>
+
+<span class="n">app</span> <span class="o">=</span> <span class="n">flask</span><span class="o">.</span><span class="n">Flask</span><span class="p">(</span><span class="n">__name__</span><span class="p">)</span>
+
+<span class="nd">@app.route</span><span class="p">(</span><span class="s">&#39;/&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">index</span><span class="p">():</span>
+    <span class="k">return</span> <span class="s">&quot;Hello, World!&quot;</span>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">app</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">debug</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+</pre></div>
+</td></tr></table></div>
+<p>このファイルを実行すると、 <a class="reference external" href="http://127.0.0.1:5000/">http://127.0.0.1:5000/</a> で Web サーバーが起動します。
+ブラウザでアクセスすると、 Hello, World! の文字が見えるはずです。</p>
+</div>
+<div class="section" id="id5">
+<h2>解説<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h2>
+<p><cite>import flask</cite> という行は、 <cite>flask</cite> という名前のモジュールを読み込んで、 <cite>flask</cite>
+という名前の変数に代入しています。
+Python はモジュールやクラスなどは全てオブジェクトで、変数に代入して利用しています。</p>
+<p><cite>app = flask.Flask(__name__)</cite> という行は、 Flask クラスのオブジェクトを作って、
+app という変数に代入しています。
+オブジェクトの要素にアクセスする場合は、 <cite>.</cite> という記号を使って、
+<cite>オブジェクト名.要素名</cite> のようにします。
+モジュールの場合、クラスや関数などが要素になります。この場合、 flask モジュールが
+提供している Flask クラスを利用していることになります。</p>
+<p>Python でクラスのインスタンス化するときは、単にクラスを関数のように呼び出すだけで、
+<cite>new</cite> などのキーワードや特別な構文はありません。
+<cite>__name__</cite> というのは、自動的に定義される変数で、現在のファイルのモジュール名が入ります。
+ファイルをスクリプトとして直接実行した場合、 <cite>__name__</cite> は <cite>__main__</cite> になります。</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p><em>from ... import ...</em> 構文</p>
+<p class="last"><cite>import flask</cite> の代わりに、 <cite>from flask import Flask</cite> と書くと、 <cite>flask.Flask</cite> クラスを
+<cite>Flask</cite> という変数に代入します。この場合、 <cite>app = flask.Flask(__name__)</cite> の代わりに
+<cite>app = Flask(__name__)</cite> と書くことができます。</p>
+</div>
+<p><cite>&#64;app.route(&#8216;/&#8217;)</cite> という行は、 <cite>app</cite> に対して <cite>/</cite> というURLに対応するアクションを
+登録しています。
+<cite>&#64;</cite> で始まる行はデコレータといって、その次の行で定義する関数やクラスに対して
+任意の処理を実行します。 <cite>app.route(&#8216;/&#8217;)</cite> は、次の行で定義される関数を指定した
+URL にマッピングするという処理を実行しています。</p>
+<p><cite>def index():</cite> という行は、関数定義を始めています。
+次の行からのコードはインデントが一段深くなり、インデントが元に戻るまでの範囲が関数の中身になります。</p>
+<p><cite>return &#8216;Hello, World!&#8217;</cite> は、 <cite>&#8216;Hello, World!&#8217;</cite> という文字列を返しています。
+この関数がアクションとして実行されると、自動的にHTTPヘッダなどが付与されてクライアントに返されます。</p>
+<p>最後の <cite>app.run(debug=True)</cite> という行は、 Flask が持っている開発用サーバーを、
+デバッグモードで実行しています。
+Python は関数の引数に <cite>引数名=値</cite> と書くことで、引数名を指定して引数を渡すことができます。
+これは、たくさんデフォルト値付きのオプションがある関数で、特定のオプションだけを指定したい場合に便利です。
+それ以外にも、引数の順番を間違えるというバグの予防にもなります。 (このバグはコードレビューしても
+なかなか見つけられないので、簡単なわりに原因究明に数時間かかってしまうことがあります)</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Flask を始めよう</a><ul>
+<li><a class="reference internal" href="#id1">環境構築</a><ul>
+<li><a class="reference internal" href="#python">Python</a></li>
+<li><a class="reference internal" href="#id2">Flask</a></li>
+<li><a class="reference internal" href="#id3">テキストエディタ</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#hello-world">Hello, World!</a></li>
+<li><a class="reference internal" href="#id5">解説</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="index.html"
+                        title="previous chapter">Flask ハンズオン</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/start_flask.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="index.html" title="Flask ハンズオン"
+             >previous</a> |</li>
+        <li><a href="index.html">Flask Handson 1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2013, INADA Naoki.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>
