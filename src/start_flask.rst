@@ -1,72 +1,53 @@
-# Flask を始めよう
+################
+Flask を始めよう
+################
 
-## Flask の紹介
+環境構築
+========
 
-Flask は Python 製のマイクロフレームワークです。
-
-マイクロフレームワークとは何でしょうか？
-
-マイクロフレームワークの対義語はフルスタックフレームワークで、普通の
-Webアプリケーションを作るのに必要なもの・便利なものをできるだけなんでも
-用意したものになります。
-
-マイクロフレームワークはその逆で、最低限必要なものや、ほぼすべてのWebアプリで
-使う機能だけで構成されたフレームワークです。
-
-マイクロフレームワークのフルスタックフレームワークに対する利点は、
-
-1. 追加のツールを自分で選ぶのが簡単 (O/Rマッパー等)
-2. フレームワークを覚えるだけで精一杯にならないで済む
-
-
-## 環境構築
+Python
+--------
 
 http://phpy.readthedocs.org/en/latest/install.html
 
 を参照してください。
 
+Flask
+-----
+
 Flask もインストールしておきます。
 
-Windows
+Windows::
 
-```
-> python -m easy_install Flask
-```
+    > python -m easy_install Flask
 
-Linux / Mac OS X
+Linux / Mac OS X::
 
-```
-$ pip install Flask
-```
+    $ pip install Flask
 
-## テキストエディタ
+テキストエディタ
+-----------------
 
 プログラミング向けのテキストエディタを用意してください。
 文字コードには utf-8 を使えるものにしてください。
 
 できれば、インデントはスペース4つにしておいてください。
 
-## Flask で Hello, World!
+Hello, World!
+===============
 
 Flask は簡単なWebアプリなら1ファイルで全て実装できます。
 
-hello.py
-```python
-import flask
+`ダウンロード <src/hello.py>`_
 
-app = flask.Flask(__name__)
-
-@app.route('/')
-def index():
-    return "Hello, World!"
-
-app.run(debug=True)
-```
+.. literalinclude:: hello.py
+    :linenos:
 
 このファイルを実行すると、 http://127.0.0.1:5000/ で Web サーバーが起動します。
 ブラウザでアクセスすると、 Hello, World! の文字が見えるはずです。
 
-## 解説
+解説
+=====
 
 `import flask` という行は、 `flask` という名前のモジュールを読み込んで、 `flask`
 という名前の変数に代入しています。
@@ -84,11 +65,13 @@ Python でクラスのインスタンス化するときは、単にクラスを�
 `__name__` というのは、自動的に定義される変数で、現在のファイルのモジュール名が入ります。
 ファイルをスクリプトとして直接実行した場合、 `__name__` は `__main__` になります。
 
-> *from ... import ...* 構文
-> 
-> `import flask` の代わりに、 `from flask import Flask` と書くと、 `flask.Flask` クラスを
-> `Flask` という変数に代入します。この場合、 `app = flask.Flask(__name__)` の代わりに
-> `app = Flask(__name__)` と書くことができます。
+.. note::
+
+    *from ... import ...* 構文
+    
+    `import flask` の代わりに、 `from flask import Flask` と書くと、 `flask.Flask` クラスを
+    `Flask` という変数に代入します。この場合、 `app = flask.Flask(__name__)` の代わりに
+    `app = Flask(__name__)` と書くことができます。
 
 `@app.route('/')` という行は、 `app` に対して `/` というURLに対応するアクションを
 登録しています。

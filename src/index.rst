@@ -1,22 +1,28 @@
-.. Flask Handson documentation master file, created by
-   sphinx-quickstart on Thu Jan 17 17:40:22 2013.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
+Flask ハンズオン
+==================
 
-Welcome to Flask Handson's documentation!
-=========================================
+Flask は Python 製のマイクロフレームワークです。
+
+マイクロフレームワークとは何でしょうか？
+
+マイクロフレームワークの対義語はフルスタックフレームワークで、普通の
+Webアプリケーションを作るのに必要なもの・便利なものをできるだけなんでも
+用意したものになります。
+
+マイクロフレームワークはその逆で、最低限必要なものや、ほぼすべてのWebアプリで
+使う機能だけで構成されたフレームワークです。
+
+マイクロフレームワークのフルスタックフレームワークに対する利点は、
+
+1. 追加のツールを自分で選ぶのが簡単 (O/Rマッパー等)
+2. フレームワークを覚えるだけで精一杯にならないで済む
+
+です
+
 
 Contents:
 
 .. toctree::
    :maxdepth: 2
 
-
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
-
+   start_flask
