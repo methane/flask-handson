@@ -51,8 +51,10 @@
 <p>公式の Flask のチュートリアルにある flaskr というアプリケーションを写経していきます。
 ただし、公式のチュートリアルでは SQLite をそのまま使っていましたが、今回は PeeWee
 という O/R マッパーを使います。</p>
-<div class="section" id="flask-peewee">
-<h2>Flask-PeeWee のインストール<a class="headerlink" href="#flask-peewee" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="step-0">
+<h2>Step 0: 準備<a class="headerlink" href="#step-0" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id1">
+<h3>インストール<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
 <p>Flask-Peewee という Flask 拡張をインストールします。</p>
 <p>Windows:</p>
 <div class="highlight-python"><pre>&gt; python -m easy_install Flask-Peewee</pre>
@@ -61,8 +63,8 @@
 <div class="highlight-python"><pre>$ pip install Flask-Peewee</pre>
 </div>
 </div>
-<div class="section" id="step-0">
-<h2>Step 0: 準備<a class="headerlink" href="#step-0" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id2">
+<h3>ディレクトリ構成<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
 <p>適当なディレクトリを作って、その中に次のようにファイルとディレクトリを作っていきます:</p>
 <div class="highlight-python"><pre>run.py
 flaskr/
@@ -101,6 +103,7 @@ flaskr/
 モデルを書いていきます。</p>
 <p>templates にはテンプレートファイルを、
 static には CSS などの静的ファイルを格納していきます。</p>
+</div>
 </div>
 <div class="section" id="step-1-model">
 <h2>Step 1: model<a class="headerlink" href="#step-1-model" title="Permalink to this headline">¶</a></h2>
@@ -220,8 +223,11 @@ h2              { font-size: 1.2em; }
   <h3><a href="index.html">Table Of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">flaskr</a><ul>
-<li><a class="reference internal" href="#flask-peewee">Flask-PeeWee のインストール</a></li>
-<li><a class="reference internal" href="#step-0">Step 0: 準備</a></li>
+<li><a class="reference internal" href="#step-0">Step 0: 準備</a><ul>
+<li><a class="reference internal" href="#id1">インストール</a></li>
+<li><a class="reference internal" href="#id2">ディレクトリ構成</a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#step-1-model">Step 1: model</a></li>
 <li><a class="reference internal" href="#step-2-view">Step 2: view</a></li>
 <li><a class="reference internal" href="#step-3-css">Step 3: テンプレートとCSSを用意する</a></li>
