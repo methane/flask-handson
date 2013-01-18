@@ -25,5 +25,5 @@ Contents:
 .. toctree::
    :maxdepth: 2
 
-   start_flask
+   start
    flaskr
