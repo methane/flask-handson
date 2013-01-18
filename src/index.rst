@@ -26,3 +26,4 @@ Contents:
    :maxdepth: 2
 
    start_flask
+   flaskr
