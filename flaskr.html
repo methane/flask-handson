@@ -1,0 +1,274 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>flaskr &mdash; Flask Handson 1 documentation</title>
+    
+    <link rel="stylesheet" href="static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="static/jquery.js"></script>
+    <script type="text/javascript" src="static/underscore.js"></script>
+    <script type="text/javascript" src="static/doctools.js"></script>
+    <link rel="top" title="Flask Handson 1 documentation" href="index.html" />
+    <link rel="prev" title="Flask を始めよう" href="start_flask.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="start_flask.html" title="Flask を始めよう"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">Flask Handson 1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="flaskr">
+<h1>flaskr<a class="headerlink" href="#flaskr" title="Permalink to this headline">¶</a></h1>
+<p>公式の Flask のチュートリアルにある flaskr というアプリケーションを写経していきます。
+ただし、公式のチュートリアルでは SQLite をそのまま使っていましたが、今回は PeeWee
+という O/R マッパーを使います。</p>
+<div class="section" id="flask-peewee">
+<h2>Flask-PeeWee のインストール<a class="headerlink" href="#flask-peewee" title="Permalink to this headline">¶</a></h2>
+<p>Flask-Peewee という Flask 拡張をインストールします。</p>
+<p>Windows:</p>
+<div class="highlight-python"><pre>&gt; python -m easy_install Flask-Peewee</pre>
+</div>
+<p>Unix:</p>
+<div class="highlight-python"><pre>$ pip install Flask-Peewee</pre>
+</div>
+</div>
+<div class="section" id="step-0">
+<h2>Step 0: 準備<a class="headerlink" href="#step-0" title="Permalink to this headline">¶</a></h2>
+<p>適当なディレクトリを作って、その中に次のようにファイルとディレクトリを作っていきます:</p>
+<div class="highlight-python"><pre>run.py
+flaskr/
+    __init__.py
+    views.py
+    models.py
+    templates/
+    static/</pre>
+</div>
+<p>run.py:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="c">#!/usr/bin/env python</span>
+<span class="kn">from</span> <span class="nn">flaskr</span> <span class="kn">import</span> <span class="n">app</span>
+<span class="n">app</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">debug</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>flaskr/__init__.py:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">flask</span> <span class="kn">import</span> <span class="n">Flask</span>
+<span class="kn">from</span> <span class="nn">flask_peewee.db</span> <span class="kn">import</span> <span class="n">Database</span>
+
+<span class="n">app</span> <span class="o">=</span> <span class="n">Flask</span><span class="p">(</span><span class="n">__name__</span><span class="p">)</span>
+<span class="n">app</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
+        <span class="n">DATABASE</span><span class="o">=</span><span class="p">{</span>
+            <span class="s">&#39;name&#39;</span><span class="p">:</span> <span class="s">&#39;flaskr.db&#39;</span><span class="p">,</span>
+            <span class="s">&#39;engine&#39;</span><span class="p">:</span> <span class="s">&#39;peewee.SqliteDatabase&#39;</span><span class="p">,</span>
+            <span class="p">},</span>
+        <span class="n">SECRET_KEY</span><span class="o">=</span><span class="s">&quot;secret key&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+
+<span class="n">db</span> <span class="o">=</span> <span class="n">Database</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
+
+<span class="kn">import</span> <span class="nn">flaskr.views</span>
+</pre></div>
+</div>
+<p>flaskr/views.py と flaskr/models.py はこれから実装していくので、
+いまは空にしておいてください。 views にはアクションを、 models には
+モデルを書いていきます。</p>
+<p>templates にはテンプレートファイルを、
+static には CSS などの静的ファイルを格納していきます。</p>
+</div>
+<div class="section" id="step-1-model">
+<h2>Step 1: model<a class="headerlink" href="#step-1-model" title="Permalink to this headline">¶</a></h2>
+<p>スキーマを定義するだけのモデルクラスを作ります。</p>
+<p>flaskr/models.py:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">flaskr</span> <span class="kn">import</span> <span class="n">db</span>
+<span class="kn">from</span> <span class="nn">peewee</span> <span class="kn">import</span> <span class="o">*</span>
+
+
+<span class="k">class</span> <span class="nc">Entry</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">title</span> <span class="o">=</span> <span class="n">CharField</span><span class="p">()</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="n">CharField</span><span class="p">()</span>
+
+
+<span class="k">def</span> <span class="nf">init</span><span class="p">():</span>
+    <span class="n">Entry</span><span class="o">.</span><span class="n">create_table</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>実際にデータベースとテーブルを作ります:</p>
+<div class="highlight-python"><pre>python -c "import flaskr.models; flaskr.models.init()"</pre>
+</div>
+</div>
+<div class="section" id="step-2-view">
+<h2>Step 2: view<a class="headerlink" href="#step-2-view" title="Permalink to this headline">¶</a></h2>
+<p>Blog エントリの一覧と投稿ができるように、 flaskr/views.py を実装していきます。</p>
+<p>flaskr/views.py:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">flask</span>
+<span class="kn">from</span> <span class="nn">flaskr</span> <span class="kn">import</span> <span class="n">app</span>
+<span class="kn">from</span> <span class="nn">flaskr.models</span> <span class="kn">import</span> <span class="n">Entry</span>
+
+
+<span class="nd">@app.route</span><span class="p">(</span><span class="s">&#39;/&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">show_entries</span><span class="p">():</span>
+    <span class="n">entries</span> <span class="o">=</span> <span class="n">Entry</span><span class="o">.</span><span class="n">select</span><span class="p">()</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="n">Entry</span><span class="o">.</span><span class="n">id</span><span class="o">.</span><span class="n">desc</span><span class="p">())</span><span class="o">.</span><span class="n">limit</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span><span class="o">.</span><span class="n">execute</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">flask</span><span class="o">.</span><span class="n">render_template</span><span class="p">(</span><span class="s">&#39;show_entries.html&#39;</span><span class="p">,</span>
+                                 <span class="n">entries</span><span class="o">=</span><span class="n">entries</span><span class="p">)</span>
+
+
+<span class="nd">@app.route</span><span class="p">(</span><span class="s">&#39;/add&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;POST&#39;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">add_entry</span><span class="p">():</span>
+    <span class="n">Entry</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+            <span class="n">title</span><span class="o">=</span><span class="n">flask</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="p">[</span><span class="s">&#39;title&#39;</span><span class="p">],</span>
+            <span class="n">text</span> <span class="o">=</span><span class="n">flask</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="p">[</span><span class="s">&#39;text&#39;</span><span class="p">],</span>
+            <span class="p">)</span>
+    <span class="n">flask</span><span class="o">.</span><span class="n">flash</span><span class="p">(</span><span class="s">&#39;New entry was successfully posted&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">flask</span><span class="o">.</span><span class="n">redirect</span><span class="p">(</span><span class="n">flask</span><span class="o">.</span><span class="n">url_for</span><span class="p">(</span><span class="s">&#39;show_entries&#39;</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="step-3-css">
+<h2>Step 3: テンプレートとCSSを用意する<a class="headerlink" href="#step-3-css" title="Permalink to this headline">¶</a></h2>
+<p>flaskr/templates/show_entries.html:</p>
+<div class="highlight-python"><pre>&lt;!doctype html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;Flaskr&lt;/title&gt;
+    &lt;link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css') }}"&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div class=page&gt;
+      &lt;h1&gt;Flaskr&lt;/h1&gt;
+      {% for message in get_flashed_messages() %}
+        &lt;div class=flash&gt;{{ message }}&lt;/div&gt;
+      {% endfor %}
+      &lt;form action="{{ url_for('add_entry') }}" method=post class=add-entry&gt;
+        &lt;dl&gt;
+          &lt;dt&gt;Title:
+          &lt;dd&gt;&lt;input type=text size=30 name=title&gt;
+          &lt;dt&gt;Text:
+          &lt;dd&gt;&lt;textarea name=text rows=5 cols=40&gt;&lt;/textarea&gt;
+          &lt;dd&gt;&lt;input type=submit value=Share&gt;
+        &lt;/dl&gt;
+      &lt;/form&gt;
+      &lt;ul class=entries&gt;
+      {% for entry in entries %}
+        &lt;li&gt;&lt;h2&gt;{{ entry.title }}&lt;/h2&gt;{{ entry.text }}
+      {% else %}
+        &lt;li&gt;&lt;em&gt;Unbelievable.  No entries here so far&lt;/em&gt;
+      {% endfor %}
+      &lt;/ul&gt;
+    &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</pre>
+</div>
+<p>CSS も用意しましょう.</p>
+<p>flaskr/static/style.css:</p>
+<div class="highlight-python"><pre>body            { font-family: sans-serif; background: #eee; }
+a, h1, h2       { color: #377BA8; }
+h1, h2          { font-family: 'Georgia', serif; margin: 0; }
+h1              { border-bottom: 2px solid #eee; }
+h2              { font-size: 1.2em; }
+
+.page           { margin: 2em auto; width: 35em; border: 5px solid #ccc;
+                  padding: 0.8em; background: white; }
+.entries        { list-style: none; margin: 0; padding: 0; }
+.entries li     { margin: 0.8em 1.2em; }
+.entries li h2  { margin-left: -1em; }
+.add-entry      { font-size: 0.9em; border-bottom: 1px solid #ccc; }
+.add-entry dl   { font-weight: bold; }
+.metanav        { text-align: right; font-size: 0.8em; padding: 0.3em;
+                  margin-bottom: 1em; background: #fafafa; }
+.flash          { background: #CEE5F5; padding: 0.5em;
+                  border: 1px solid #AACBE2; }
+.error          { background: #F0D6D6; padding: 0.5em; }
+</pre>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">flaskr</a><ul>
+<li><a class="reference internal" href="#flask-peewee">Flask-PeeWee のインストール</a></li>
+<li><a class="reference internal" href="#step-0">Step 0: 準備</a></li>
+<li><a class="reference internal" href="#step-1-model">Step 1: model</a></li>
+<li><a class="reference internal" href="#step-2-view">Step 2: view</a></li>
+<li><a class="reference internal" href="#step-3-css">Step 3: テンプレートとCSSを用意する</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="start_flask.html"
+                        title="previous chapter">Flask を始めよう</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="sources/flaskr.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="start_flask.html" title="Flask を始めよう"
+             >previous</a> |</li>
+        <li><a href="index.html">Flask Handson 1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2013, INADA Naoki.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

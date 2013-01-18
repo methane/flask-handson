@@ -5,8 +5,8 @@ from flaskr.models import Entry
 
 @app.route('/')
 def show_entries():
-    entries = Entry.select().order_by('id desc').limit(10).execute()
-    return flask.render_template('show_template.html',
+    entries = Entry.select().order_by(Entry.id.desc()).limit(10).execute()
+    return flask.render_template('show_entries.html',
                                  entries=entries)
 
 
