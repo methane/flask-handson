@@ -20,7 +20,7 @@ Webアプリケーションを作るのに必要なもの・便利なものを�
 です
 
 
-Contents:
+目次
 
 .. toctree::
    :maxdepth: 2
