@@ -31,6 +31,7 @@ Unix::
     run.py
     flaskr/
         __init__.py
+        config.py
         views.py
         models.py
         templates/
@@ -39,6 +40,10 @@ Unix::
 run.py:
 
 .. literalinclude:: flaskr/run.py
+
+flaskr/config.py:
+
+.. literalinclude:: flaskr/flaskr/config.py
 
 flaskr/__init__.py:
 

@@ -69,6 +69,7 @@
 <div class="highlight-python"><pre>run.py
 flaskr/
     __init__.py
+    config.py
     views.py
     models.py
     templates/
@@ -80,19 +81,20 @@ flaskr/
 <span class="n">app</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">debug</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
 </pre></div>
 </div>
+<p>flaskr/config.py:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">DATABASE</span><span class="o">=</span><span class="p">{</span>
+    <span class="s">&#39;name&#39;</span><span class="p">:</span> <span class="s">&#39;flaskr.db&#39;</span><span class="p">,</span>
+    <span class="s">&#39;engine&#39;</span><span class="p">:</span> <span class="s">&#39;peewee.SqliteDatabase&#39;</span><span class="p">,</span>
+    <span class="p">}</span>
+<span class="n">SECRET_KEY</span><span class="o">=</span><span class="s">&quot;secret key&quot;</span>
+</pre></div>
+</div>
 <p>flaskr/__init__.py:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">flask</span> <span class="kn">import</span> <span class="n">Flask</span>
 <span class="kn">from</span> <span class="nn">flask_peewee.db</span> <span class="kn">import</span> <span class="n">Database</span>
 
 <span class="n">app</span> <span class="o">=</span> <span class="n">Flask</span><span class="p">(</span><span class="n">__name__</span><span class="p">)</span>
-<span class="n">app</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
-        <span class="n">DATABASE</span><span class="o">=</span><span class="p">{</span>
-            <span class="s">&#39;name&#39;</span><span class="p">:</span> <span class="s">&#39;flaskr.db&#39;</span><span class="p">,</span>
-            <span class="s">&#39;engine&#39;</span><span class="p">:</span> <span class="s">&#39;peewee.SqliteDatabase&#39;</span><span class="p">,</span>
-            <span class="p">},</span>
-        <span class="n">SECRET_KEY</span><span class="o">=</span><span class="s">&quot;secret key&quot;</span><span class="p">,</span>
-        <span class="p">)</span>
-
+<span class="n">app</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">from_object</span><span class="p">(</span><span class="s">&#39;flaskr.config&#39;</span><span class="p">)</span>
 <span class="n">db</span> <span class="o">=</span> <span class="n">Database</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
 
 <span class="kn">import</span> <span class="nn">flaskr.views</span>

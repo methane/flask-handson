@@ -1,3 +1,4 @@
 doctrees
 objects.inv
 src/_build
+*.pyc
