@@ -1,5 +1,2 @@
-DATABASE={
-    'name': 'flaskr.db',
-    'engine': 'peewee.SqliteDatabase',
-    }
+SQLALCHEMY_DATABASE_URI = 'sqlite:///flaskr.db'
 SECRET_KEY="secret key"

@@ -1,11 +1,12 @@
 from flaskr import db
-from peewee import *
+from sqlalchemy import *
 
 
 class Entry(db.Model):
-    title = CharField()
-    text = CharField()
+    id = Column(Integer, primary_key=True)
+    title = Column(Text)
+    text = Column(Text)
 
 
 def init():
-    Entry.create_table()
+    db.create_all()

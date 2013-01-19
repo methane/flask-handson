@@ -1,8 +1,8 @@
 from flask import Flask
-from flask_peewee.db import Database
+from flask.ext.sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
 app.config.from_object('flaskr.config')
-db = Database(app)
+db = SQLAlchemy(app)
 
-import flaskr.views
+import flaskr.views  # NOQA
