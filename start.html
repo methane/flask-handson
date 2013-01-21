@@ -57,15 +57,15 @@
 <div class="section" id="python">
 <h3>Python<a class="headerlink" href="#python" title="Permalink to this headline">¶</a></h3>
 <p><a class="reference external" href="http://phpy.readthedocs.org/en/latest/install.html">http://phpy.readthedocs.org/en/latest/install.html</a></p>
-<p>を参照してください。</p>
+<p>を参照してください。
+このドキュメントでは外部パッケージのインストールに <cite>pip</cite> というコマンドを利用しています。
+Windows の場合、 <cite>&gt; python -m easy_install pip</cite> して <cite>pip</cite> をインストールするか、
+このドキュメントで <cite>pip install パッケージ名</cite> としている部分を <cite>python -m easy_install パッケージ名</cite>
+に読み替えてください。</p>
 </div>
 <div class="section" id="id2">
 <h3>Flask<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
 <p>Flask もインストールしておきます。</p>
-<p>Windows:</p>
-<div class="highlight-python"><pre>&gt; python -m easy_install Flask</pre>
-</div>
-<p>Linux / Mac OS X:</p>
 <div class="highlight-python"><pre>$ pip install Flask</pre>
 </div>
 </div>
@@ -108,39 +108,44 @@
 <h2>解説<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h2>
 <p><cite>import flask</cite> という行は、 <cite>flask</cite> という名前のモジュールを読み込んで、 <cite>flask</cite>
 という名前の変数に代入しています。
-Python はモジュールやクラスなどは全てオブジェクトで、変数に代入して利用しています。</p>
-<p><cite>app = flask.Flask(__name__)</cite> という行は、 Flask クラスのオブジェクトを作って、
-app という変数に代入しています。
-オブジェクトの要素にアクセスする場合は、 <cite>.</cite> という記号を使って、
-<cite>オブジェクト名.要素名</cite> のようにします。
-モジュールの場合、クラスや関数などが要素になります。この場合、 flask モジュールが
-提供している Flask クラスを利用していることになります。</p>
+Python は数値や文字列だけでなく、モジュールやクラスなども全てオブジェクトで、
+変数に代入して利用しています。</p>
+<p><cite>app = flask.Flask(__name__)</cite> という行は、 Flask クラスのインスタンスを作って、
+<cite>app</cite> という変数に代入しています。
+オブジェクトの属性にアクセスする場合は、 <cite>.</cite> という記号を使って、
+<cite>オブジェクト名.要素名</cite> のようにします。</p>
+<p>クラスのインスタンスの場合はメソッドやメンバ変数が属性になりますが、
+モジュールの場合はそのモジュールが持っているクラスや関数などが属性になります。
+この場合、 flask モジュールが提供している Flask クラスを利用していることになります。</p>
 <p>Python でクラスのインスタンス化するときは、単にクラスを関数のように呼び出すだけで、
-<cite>new</cite> などのキーワードや特別な構文はありません。
-<cite>__name__</cite> というのは、自動的に定義される変数で、現在のファイルのモジュール名が入ります。
+<cite>new</cite> などのキーワードや特別な構文はありません。</p>
+<p><cite>__name__</cite> というのは、自動的に定義される変数で、現在のファイルのモジュール名が入ります。
 ファイルをスクリプトとして直接実行した場合、 <cite>__name__</cite> は <cite>__main__</cite> になります。</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p><em>from ... import ...</em> 構文</p>
 <p class="last"><cite>import flask</cite> の代わりに、 <cite>from flask import Flask</cite> と書くと、 <cite>flask.Flask</cite> クラスを
-<cite>Flask</cite> という変数に代入します。この場合、 <cite>app = flask.Flask(__name__)</cite> の代わりに
+<cite>Flask</cite> という変数に代入します。こうすると、 <cite>app = flask.Flask(__name__)</cite> の代わりに
 <cite>app = Flask(__name__)</cite> と書くことができます。</p>
 </div>
-<p><cite>&#64;app.route(&#8216;/&#8217;)</cite> という行は、 <cite>app</cite> に対して <cite>/</cite> というURLに対応するアクションを
-登録しています。
-<cite>&#64;</cite> で始まる行はデコレータといって、その次の行で定義する関数やクラスに対して
-任意の処理を実行します。 <cite>app.route(&#8216;/&#8217;)</cite> は、次の行で定義される関数を指定した
-URL にマッピングするという処理を実行しています。</p>
+<p><cite>&#64;app.route(&#8216;/&#8217;)</cite> という行は、 <cite>app</cite> に対して <cite>/</cite> というURLに対応するアクションを登録しています。</p>
+<p><cite>&#64;</cite> で始まる行はデコレータといって、その次の行で定義する関数やクラスに対して何らかの処理を行います。
+<cite>&#64;app.route(&#8216;/&#8217;)</cite> は、次の行で定義される関数を指定した URL にマッピングするという処理を実行しています。</p>
 <p><cite>def index():</cite> という行は、関数定義を始めています。
 次の行からのコードはインデントが一段深くなり、インデントが元に戻るまでの範囲が関数の中身になります。</p>
 <p><cite>return &#8216;Hello, World!&#8217;</cite> は、 <cite>&#8216;Hello, World!&#8217;</cite> という文字列を返しています。
-この関数がアクションとして実行されると、自動的にHTTPヘッダなどが付与されてクライアントに返されます。</p>
+この関数がアクションとして実行されると、自動的にHTTPヘッダなどが付与されてクライアントに返されます。
+HTTP ヘッダを自分で制御したい場合は、 <cite>flask.make_response()</cite> という関数を利用して
+Response オブジェクトを作り、文字列の代わりに返します。</p>
 <p>最後の <cite>app.run(debug=True)</cite> という行は、 Flask が持っている開発用サーバーを、
 デバッグモードで実行しています。
 Python は関数の引数に <cite>引数名=値</cite> と書くことで、引数名を指定して引数を渡すことができます。
-これは、たくさんデフォルト値付きのオプションがある関数で、特定のオプションだけを指定したい場合に便利です。
-それ以外にも、引数の順番を間違えるというバグの予防にもなります。 (このバグはコードレビューしても
-なかなか見つけられないので、簡単なわりに原因究明に数時間かかってしまうことがあります)</p>
+これをキーワード引数と呼びます。</p>
+<p>キーワード引数は、たくさんデフォルト値付きの引数がある関数で、特定のオプションだけを
+指定したい場合に便利です。
+それ以外にも、引数の順番を間違えるというバグの予防にもなります。
+(このバグはコードレビューしてもなかなか見つけられないので、
+簡単なわりに原因究明に数時間かかってしまうことがあります)</p>
 </div>
 </div>
 
