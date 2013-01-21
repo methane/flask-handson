@@ -5,4 +5,4 @@ app = Flask(__name__)
 app.config.from_object('flaskr.config')
 db = SQLAlchemy(app)
 
-import flaskr.views  # NOQA
+import flaskr.views
