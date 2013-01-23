@@ -278,12 +278,16 @@ h2              { font-size: 1.2em; }
 .error          { background: #F0D6D6; padding: 0.5em; }
 </pre>
 </div>
+<p>これでひとまず完成です。</p>
+<div class="highlight-python"><pre>$ python run.py</pre>
+</div>
+<p>で実行して、ブラウザで動いていることを確認してみましょう。</p>
 </div>
 <div class="section" id="step-4">
 <h2>Step 4: テスト<a class="headerlink" href="#step-4" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="id4">
 <h3>インタラクティブシェル<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
-<p>とりあえずインタラクティブシェルからリクエストを実行してみましょう.</p>
+<p>まずはインタラクティブシェルからリクエストを実行してみましょう.</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">flaskr</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">flaskr</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">test_client</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s">&#39;/add&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;title&#39;</span><span class="p">:</span> <span class="s">&#39;test title 1&#39;</span><span class="p">,</span> <span class="s">&#39;text&#39;</span><span class="p">:</span> <span class="s">&#39;test text 1&#39;</span><span class="p">},</span> <span class="n">follow_redirects</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>

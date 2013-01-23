@@ -163,13 +163,22 @@ flaskr/static/style.css:
 .. まずは次のようなファイルを作ってください。
 .. .. literalinclude:: basic/template/layout.html
 
+これでひとまず完成です。
+
+::
+
+    $ python run.py
+
+で実行して、ブラウザで動いていることを確認してみましょう。
+
+
 Step 4: テスト
 ================
 
 インタラクティブシェル
 -----------------------
 
-とりあえずインタラクティブシェルからリクエストを実行してみましょう. ::
+まずはインタラクティブシェルからリクエストを実行してみましょう. ::
 
     >>> import flaskr
     >>> client = flaskr.app.test_client()
