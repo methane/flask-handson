@@ -41,7 +41,7 @@ Flask は簡単なWebアプリなら1ファイルで全て実装できます。
 .. literalinclude:: hello.py
     :linenos:
 
-このファイルを実行すると、 http://127.0.0.1:5000/ で Web サーバーが起動します。
+このファイルを `python hello.py` のように実行すると、 http://127.0.0.1:5000/ で Web サーバーが起動します。
 ブラウザでアクセスすると、 Hello, World! の文字が見えるはずです。
 
 解説
