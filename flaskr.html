@@ -134,14 +134,19 @@ static には CSS などの静的ファイルを格納していきます。</p>
 <h2>Step 1: model<a class="headerlink" href="#step-1-model" title="Permalink to this headline">¶</a></h2>
 <p>スキーマを定義するだけのモデルクラスを作ります。</p>
 <p>flaskr/models.py:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">flaskr</span> <span class="kn">import</span> <span class="n">db</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="c"># coding: utf-8</span>
+<span class="kn">from</span> <span class="nn">flaskr</span> <span class="kn">import</span> <span class="n">db</span>
 <span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="o">*</span>
 
 
 <span class="k">class</span> <span class="nc">Entry</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="s">u&quot;ブログエントリ&quot;</span>
     <span class="nb">id</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
     <span class="n">title</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">Text</span><span class="p">)</span>
     <span class="n">text</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">Text</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s">&quot;&lt;Entry id={} title=&#39;{}&#39;&gt;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">title</span><span class="p">)</span>
 
 
 <span class="k">def</span> <span class="nf">init</span><span class="p">():</span>
@@ -150,6 +155,40 @@ static には CSS などの静的ファイルを格納していきます。</p>
 </div>
 <p>実際にデータベースとテーブルを作ります:</p>
 <div class="highlight-python"><pre>python -c "import flaskr.models; flaskr.models.init()"</pre>
+</div>
+<p>インタラクティブシェルでモデルを触って見ましょう.
+SQLAlchemy は Unit of Work というスタイルの O/R マッパーで、取得したエンティティは自動的に「セッション」に紐づけられます。
+エンティティを操作したあとに <cite>db.session.commit()</cite> することで、変更がDBに反映されます。
+新規にエンティティを作成する場合は、 <cite>db.session.add(entity)</cite> でセッションに紐づけます。</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">flaskr.models</span> <span class="kn">import</span> <span class="n">Entry</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">flaskr</span> <span class="kn">import</span> <span class="n">db</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">entry</span> <span class="o">=</span> <span class="n">Entry</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s">&quot;title1&quot;</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s">&quot;text1&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">db</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">entry</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">db</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="n">entry</span> <span class="o">=</span> <span class="n">Entry</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s">&#39;title&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">),</span> <span class="n">text</span><span class="o">=</span><span class="s">&#39;text&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
+<span class="gp">... </span>    <span class="n">db</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">entry</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">db</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">entries</span> <span class="o">=</span> <span class="n">Entry</span><span class="o">.</span><span class="n">query</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">entries</span>
+<span class="go">[&lt;Entry id=1 title=&#39;title1&#39;&gt;, &lt;Entry id=2 title=&#39;title2&#39;&gt;, &lt;Entry id=3 title=&#39;title3&#39;&gt;, &lt;Entry id=4 title=&#39;title4&#39;&gt;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">entries</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">id</span>
+<span class="go">1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">entries</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">text</span>
+<span class="go">u&#39;text1&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Entry</span><span class="o">.</span><span class="n">query</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">&lt;Entry id=3 title=&#39;title3&#39;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Entry</span><span class="o">.</span><span class="n">query</span><span class="o">.</span><span class="n">filter_by</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s">&#39;title2&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">one</span><span class="p">()</span>
+<span class="go">&lt;Entry id=2 title=&#39;title2&#39;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">entry</span> <span class="o">=</span> <span class="n">_</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">entry</span><span class="o">.</span><span class="n">text</span>
+<span class="go">u&#39;text2&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">entry</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="s">&quot;fizz buzz&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">db</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Entry</span><span class="o">.</span><span class="n">query</span><span class="o">.</span><span class="n">filter_by</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s">&#39;title2&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">one</span><span class="p">()</span><span class="o">.</span><span class="n">text</span>
+<span class="go">u&#39;fizz buzz&#39;</span>
+</pre></div>
 </div>
 </div>
 <div class="section" id="step-2-view">
@@ -240,6 +279,126 @@ h2              { font-size: 1.2em; }
 </pre>
 </div>
 </div>
+<div class="section" id="step-4">
+<h2>Step 4: テスト<a class="headerlink" href="#step-4" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id4">
+<h3>インタラクティブシェル<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
+<p>とりあえずインタラクティブシェルからリクエストを実行してみましょう.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">flaskr</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">flaskr</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">test_client</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s">&#39;/add&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;title&#39;</span><span class="p">:</span> <span class="s">&#39;test title 1&#39;</span><span class="p">,</span> <span class="s">&#39;text&#39;</span><span class="p">:</span> <span class="s">&#39;test text 1&#39;</span><span class="p">},</span> <span class="n">follow_redirects</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span>
+<span class="go">200</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">response</span><span class="o">.</span><span class="n">status</span>
+<span class="go">&#39;200 OK&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">response</span><span class="o">.</span><span class="n">data</span>
+<span class="go">&lt;!doctype html&gt;</span>
+<span class="go">&lt;html&gt;</span>
+<span class="go">&lt;head&gt;</span>
+<span class="go">    &lt;title&gt;Flaskr&lt;/title&gt;</span>
+<span class="go">    &lt;link rel=stylesheet type=text/css href=&quot;/static/style.css&quot;&gt;</span>
+<span class="go">&lt;/head&gt;</span>
+<span class="go">&lt;body&gt;</span>
+<span class="go">    &lt;div class=page&gt;</span>
+<span class="go">      &lt;h1&gt;Flaskr&lt;/h1&gt;</span>
+
+<span class="go">        &lt;div class=flash&gt;New entry was successfully posted&lt;/div&gt;</span>
+
+<span class="go">      &lt;form action=&quot;/add&quot; method=post class=add-entry&gt;</span>
+<span class="go">        &lt;dl&gt;</span>
+<span class="go">          &lt;dt&gt;Title:</span>
+<span class="go">          &lt;dd&gt;&lt;input type=text size=30 name=title&gt;</span>
+<span class="go">          &lt;dt&gt;Text:</span>
+<span class="go">          &lt;dd&gt;&lt;textarea name=text rows=5 cols=40&gt;&lt;/textarea&gt;</span>
+<span class="go">          &lt;dd&gt;&lt;input type=submit value=Share&gt;</span>
+<span class="go">        &lt;/dl&gt;</span>
+<span class="go">      &lt;/form&gt;</span>
+<span class="go">      &lt;ul class=entries&gt;</span>
+
+<span class="go">        &lt;li&gt;&lt;h2&gt;test title 1&lt;/h2&gt;test text 1</span>
+
+<span class="go">      &lt;/ul&gt;</span>
+<span class="go">    &lt;/div&gt;</span>
+<span class="go">&lt;/body&gt;</span>
+<span class="go">&lt;/html&gt;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="py-test">
+<h3>py.test のインストール<a class="headerlink" href="#py-test" title="Permalink to this headline">¶</a></h3>
+<p>Python の標準ライブラリにも unittest モジュールがありますが、より簡単にテストを書ける
+<cite>pytest</cite> を使いましょう。</p>
+<div class="highlight-python"><pre>(Unix) $ pip install pytest</pre>
+</div>
+</div>
+<div class="section" id="id5">
+<h3>テストを書く<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h3>
+<p>py.test は、 <cite>*_test</cite> や <cite>test_*</cite> という名前のモジュールを検索して、その中の
+<cite>test_*</cite> という名前の関数や <cite>Test*</cite> といった名前のクラスを検索し実行します。</p>
+<p>py.test を使う場合、 <cite>assertEqual</cite> などの assert メソッドを利用しなくても、
+python の <cite>assert</cite> 文を使うだけで十分です。
+たくさんのメソッドを覚える必要が無いので楽ちんです。</p>
+<p>先ほどインタラクティブシェルで試したログを見ながらテストを書いていきます。</p>
+<p>flaskr/tests/test_actions.py:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">flaskr</span>
+<span class="kn">from</span> <span class="nn">flaskr</span> <span class="kn">import</span> <span class="n">app</span>
+<span class="kn">from</span> <span class="nn">flaskr.models</span> <span class="kn">import</span> <span class="n">Entry</span>
+
+<span class="k">def</span> <span class="nf">setup_module</span><span class="p">():</span>
+    <span class="n">flaskr</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">drop_all</span><span class="p">()</span>
+    <span class="n">flaskr</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">init</span><span class="p">()</span>
+
+<span class="k">def</span> <span class="nf">test_post_entry</span><span class="p">():</span>
+    <span class="n">client</span> <span class="o">=</span> <span class="n">app</span><span class="o">.</span><span class="n">test_client</span><span class="p">()</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s">&#39;/add&#39;</span><span class="p">,</span>
+                           <span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;title&#39;</span><span class="p">:</span> <span class="s">&#39;test title 1&#39;</span><span class="p">,</span> <span class="s">&#39;text&#39;</span><span class="p">:</span> <span class="s">&#39;test text 1&#39;</span><span class="p">},</span>
+                           <span class="n">follow_redirects</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span>
+    <span class="k">assert</span> <span class="s">&quot;test title 1&quot;</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">data</span>
+    <span class="k">assert</span> <span class="s">&quot;test text 1&quot;</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">data</span>
+    <span class="k">with</span> <span class="n">app</span><span class="o">.</span><span class="n">test_request_context</span><span class="p">():</span>
+        <span class="k">assert</span> <span class="n">Entry</span><span class="o">.</span><span class="n">query</span><span class="o">.</span><span class="n">count</span><span class="p">()</span> <span class="o">==</span> <span class="mi">1</span>
+        <span class="n">entry</span> <span class="o">=</span> <span class="n">Entry</span><span class="o">.</span><span class="n">query</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">entry</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="s">&#39;test title 1&#39;</span>
+        <span class="n">entry</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="s">&#39;test text 1&#39;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id6">
+<h3>実行する<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h3>
+<p><cite>py.test</cite> を実行すると、テストファイルを見つけた場所でテストを実行するので、
+<cite>import flaskr</cite> が失敗してしまいます。
+プロジェクトのトップディレクトリを検索パスに追加するために <span class="target" id="index-0"></span><tt class="xref std std-envvar docutils literal"><span class="pre">PYTHONPATH</span></tt>
+を使いましょう。</p>
+<div class="highlight-python"><pre>$ PYTHONPATH=. py.test
+================================== test session starts ===================================
+platform darwin -- Python 2.7.3 -- pytest-2.3.4
+collected 1 items
+
+flaskr/tests/test_actions.py .
+
+================================ 1 passed in 0.20 seconds ================================</pre>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>PYTHONPATH 以外の方法</p>
+<p><cite>setup.py</cite> というファイルを書いて、一般的なインストールできるパッケージの形にすると、
+<cite>python setup.py develop</cite> で Python の検索パスに現在のディレクトリを追加します。</p>
+<p>また、 <cite>py.test &#8211;genscript=runtests.py</cite> でテストを実行するスクリプトを生成し、
+その先頭で次のように検索パスを追加しても良いでしょう。</p>
+<div class="last highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">sys</span><span class="o">,</span> <span class="nn">os</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">__file__</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="idd">
+<h3>IDD<a class="headerlink" href="#idd" title="Permalink to this headline">¶</a></h3>
+<p>モデルやアクションを書く前にテストを書くTDDをするためには、まずモデルやレスポンスオブジェクトのAPIを覚えないといけません。</p>
+<p>初心者のうちは、インタラクティブシェルで触ってみて、コードを書いて、インタラクティブシェルで動作を確認して、
+その結果をテストにするというインタラクティブシェル駆動開発を行えば、APIを覚えながら開発ができます。</p>
+</div>
+</div>
 </div>
 
 
@@ -265,6 +424,14 @@ h2              { font-size: 1.2em; }
 <li><a class="reference internal" href="#step-1-model">Step 1: model</a></li>
 <li><a class="reference internal" href="#step-2-view">Step 2: view</a></li>
 <li><a class="reference internal" href="#step-3-css">Step 3: テンプレートとCSSを用意する</a></li>
+<li><a class="reference internal" href="#step-4">Step 4: テスト</a><ul>
+<li><a class="reference internal" href="#id4">インタラクティブシェル</a></li>
+<li><a class="reference internal" href="#py-test">py.test のインストール</a></li>
+<li><a class="reference internal" href="#id5">テストを書く</a></li>
+<li><a class="reference internal" href="#id6">実行する</a></li>
+<li><a class="reference internal" href="#idd">IDD</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
