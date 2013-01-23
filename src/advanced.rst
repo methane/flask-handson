@@ -21,17 +21,16 @@ Flask-GoogleAuth は Google アカウントでログインするためのプラ�
 プラグインを組み込む
 ^^^^^^^^^^^^^^^^^^^^^^
 
-TODO: SQLAlchemy に切り替える
-
 flaskr/__init__.py::
 
     from flask import Flask
-    from flask.ext.peewee.db import Database
+    from flask.ext.sqlalchemy import SQLAlchemy
     from flask.ext.googleauth import (GoogleFederated, GoogleAuth)
 
     app = Flask(__name__)
     app.config.from_object('flaskr.config')
-    db = Database(app)
+    db = SQLAlchemy(app)
+
     auth = GoogleAuth(app)
     #klab.com ドメインの Google Apps で認証する場合は GoogleFederated を使う
     #auth = GoogleFederated(app, 'klab.com')
@@ -91,9 +90,8 @@ Python の標準ライブラリにも unittest モジュールがありますが
 ^^^^^^^^^^^^^
 
 ::
-    (Windows) > python -m easy_install pytest
-    (Unix) $ pip install pytest
 
+    (Unix) $ pip install pytest
 
 テストを書く
 ^^^^^^^^^^^^
