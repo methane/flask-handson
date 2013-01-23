@@ -1,6 +1,39 @@
 Flask を使いこなそう
 =====================
 
+URLマッピング
+--------------
+
+`@app.route` で指定する URL にパラメータを埋め込むこともできます。
+
+`<引数名>` を URL に入れると、その部分の文字列が引数に渡されます。
+`<int:引数名>` と書くと、その部分が整数に変換されるようになります。
+
+flaskr で特定の POST だけを表示するアクションを書いてみます。
+
+flaskr/views.py::
+
+    @app.route('/entry/<int:id>')
+    def show_entry(id):
+        entry = Entry.get_or_404(id=id)
+        flask.render_template('entry.html', entry=entry)
+
+view の分割
+-------------
+
+flaskr は小さかったので、 views.py 1つですべてのアクションを書いていましたが、
+アプリケーションが大きくなってきたらパッケージを使って分割すると良いでしょう。
+
+flaskr の場合、 views というディレクトリを作成し、 views.py を views/flaskr.py
+にリネームすると良いでしょう。 views/ ディレクトリを「パッケージ」にするために、
+__init__.py という空のファイルも作っておきます。
+
+::
+
+    views/
+        __init__.py
+        flaskr.py
+
 Flask-GoogleAuth
 ------------------
 
@@ -38,13 +71,20 @@ flaskr/__init__.py::
 view から使う
 ^^^^^^^^^^^^^^
 
-ある view に認証しないとアクセスできないようにするには次のようにします。
+ある view に認証しないとアクセスできないようにするには次のようにします。 ::
 
-TODO: required
+    from flaskr import auth, app
+
+    @app.route('/add', methods=['POST'])
+    @auth.required
+    def add_entry():
+        ...
 
 認証された場合、 `flask.g.user` というオブジェクトができます。このオブジェクトには
 `user.email`, `user.name`, `user.first_name`, `user.last_name` という属性があります。
 
+`flask.g` というオブジェクトはデフォルトでテンプレートに渡されるようになっているので、
+テンプレートの中では `{{ g.email }}` のようにしてユーザーの情報を表示することができます。
 
 Flask-Admin
 ------------
@@ -53,72 +93,4 @@ Flask-Admin を使えば、データベースのCRUD管理画面を簡単に作�
 
 TODO
 
-
-flask.request
---------------
-
-`flask.request` オブジェクトからリクエストにアクセスできます。
-
-`request.form` オブジェクトは POST で送信されたフォームの情報を、 `request.args`
-でクエリパラメータを取得出来ます。
-
-
-URLマッピング
---------------
-
-`@app.route` で指定する URL にパラメータを埋め込むこともできます。
-
-`<引数名>` を URL に入れると、その部分の文字列が引数に渡されます。
-`<int:引数名>` と書くと、その部分が整数に変換されるようになります。
-
-flaskr で特定の POST だけを表示するアクションを書いてみます。
-
-flaskr/views.py::
-
-    @app.route('/entry/<int:id>')
-    def show_entry(id):
-        entry = Entry.get_or_404(id=id)
-        flask.render_template('entry.html', entry=entry)
-
-テスト
--------
-
-Python の標準ライブラリにも unittest モジュールがありますが、より簡単にテストを書ける
-`pytest` を使いましょう。
-
-インストール
-^^^^^^^^^^^^^
-
-::
-
-    (Unix) $ pip install pytest
-
-テストを書く
-^^^^^^^^^^^^
-
-flaskr/tests/test_actions.py::
-
-    from flaskr import app
-
-    def test_show_entry():
-        client = app.test_client()
-        response = client.get('/entry/1')
-        assert response.status_code == 404
-
-
-view の分割
--------------
-
-flaskr は小さかったので、 views.py 1つですべてのアクションを書いていましたが、
-アプリケーションが大きくなってきたらパッケージを使って分割すると良いでしょう。
-
-flaskr の場合、 views というディレクトリを作成し、 views.py を views/flaskr.py
-にリネームすると良いでしょう。 views/ ディレクトリを「パッケージ」にするために、
-__init__.py という空のファイルも作っておきます。
-
-::
-
-    views/
-        __init__.py
-        flaskr.py
 
