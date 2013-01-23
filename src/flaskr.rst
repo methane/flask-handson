@@ -94,6 +94,39 @@ flaskr/models.py:
 
     python -c "import flaskr.models; flaskr.models.init()"
 
+インタラクティブシェルでモデルを触って見ましょう.
+SQLAlchemy は Unit of Work というスタイルの O/R マッパーで、取得したエンティティは自動的に「セッション」に紐づけられます。
+エンティティを操作したあとに `db.session.commit()` することで、変更がDBに反映されます。
+新規にエンティティを作成する場合は、 `db.session.add(entity)` でセッションに紐づけます。
+
+    >>> from flaskr.models import Entry
+    >>> from flaskr import db
+    >>> entry = Entry(title="title1", text="text1")
+    >>> db.session.add(entry)
+    >>> db.session.commit()
+    >>> for i in range(2, 5):
+    ...     entry = Entry(title='title' + str(i), text='text' + str(i))
+    ...     db.session.add(entry)
+    ... 
+    >>> db.session.commit()
+    >>> entries = Entry.query.all()
+    >>> entries
+    [<Entry id=1 title='title1'>, <Entry id=2 title='title2'>, <Entry id=3 title='title3'>, <Entry id=4 title='title4'>]
+    >>> entries[0].id
+    1
+    >>> entries[0].text
+    u'text1'
+    >>> Entry.query.get(3)
+    <Entry id=3 title='title3'>
+    >>> Entry.query.filter_by(title='title2').one()
+    <Entry id=2 title='title2'>
+    >>> entry = _
+    >>> entry.text
+    u'text2'
+    >>> entry.text = "fizz buzz"
+    >>> db.session.commit()
+    >>> Entry.query.filter_by(title='title2').one().text
+    u'fizz buzz'
 
 Step 2: view
 ==============
@@ -121,7 +154,6 @@ flaskr/static/style.css:
 .. literalinclude:: flaskr/flaskr/static/style.css
 
 
-
 .. .. note::
 
 ..    Jinja2 の構文は、 Django のテンプレートエンジンや Twig の構文と似ています。
@@ -131,3 +163,134 @@ flaskr/static/style.css:
 .. まずは次のようなファイルを作ってください。
 .. .. literalinclude:: basic/template/layout.html
 
+Step 4: テスト
+================
+
+インタラクティブシェル
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+とりあえずインタラクティブシェルからリクエストを実行してみましょう.
+
+    >>> import flaskr
+    >>> client = flaskr.app.test_client()
+    >>> response = client.post('/add', data={'title': 'test title 1', 'text': 'test text 1'}, follow_redirects=True)
+    >>> response.status_code
+    200
+    >>> response.status
+    '200 OK'
+    >>> print response.data
+    <!doctype html>
+    <html>
+    <head>
+        <title>Flaskr</title>
+        <link rel=stylesheet type=text/css href="/static/style.css">
+    </head>
+    <body>
+        <div class=page>
+          <h1>Flaskr</h1>
+          
+            <div class=flash>New entry was successfully posted</div>
+          
+          <form action="/add" method=post class=add-entry>
+            <dl>
+              <dt>Title:
+              <dd><input type=text size=30 name=title>
+              <dt>Text:
+              <dd><textarea name=text rows=5 cols=40></textarea>
+              <dd><input type=submit value=Share>
+            </dl>
+          </form>
+          <ul class=entries>
+          
+            <li><h2>test title 1</h2>test text 1
+          
+          </ul>
+        </div>
+    </body>
+    </html>
+
+py.test のインストール
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Python の標準ライブラリにも unittest モジュールがありますが、より簡単にテストを書ける
+`pytest` を使いましょう。
+
+::
+
+    (Unix) $ pip install pytest
+
+テストを書く
+^^^^^^^^^^^^
+
+py.test は、 `*_test` や `test_*` という名前のモジュールを検索して、その中の
+`test_*` という名前の関数や `Test*` といった名前のクラスを検索し実行します。
+
+py.test を使う場合、 `assertEqual` などの assert メソッドを利用しなくても、
+python の `assert` 文を使うだけで十分です。
+たくさんのメソッドを覚える必要が無いので楽ちんです。
+
+先ほどインタラクティブシェルで試したログを見ながらテストを書いていきます。
+
+flaskr/tests/test_actions.py::
+
+    import flaskr
+    from flaskr import app
+    from flaskr.models import Entry
+
+    def setup_module():
+        flaskr.db.drop_all()
+        flaskr.models.init()
+
+    def test_post_entry():
+        client = app.test_client()
+        response = client.post('/add',
+                               data={'title': 'test title 1', 'text': 'test text 1'},
+                               follow_redirects=True)
+        assert response.status_code == 200
+        assert "test title 1" in response.data
+        assert "test text 1" in response.data
+        with app.test_request_context():
+            assert Entry.query.count() == 1
+            entry = Entry.query.get(1)
+            entry.title = 'test title 1'
+            entry.text = 'test text 1'
+
+実行する
+^^^^^^^^^
+
+`py.test` を実行すると、テストファイルを見つけた場所でテストを実行するので、
+`import flaskr` が失敗してしまいます。
+プロジェクトのトップディレクトリを検索パスに追加するために :envvar:`PYTHONPATH`
+を使いましょう。
+
+::
+
+        $ PYTHONPATH=. py.test
+        ================================== test session starts ===================================
+        platform darwin -- Python 2.7.3 -- pytest-2.3.4
+        collected 1 items 
+        
+        flaskr/tests/test_actions.py .
+        
+        ================================ 1 passed in 0.20 seconds ================================
+
+.. note::
+
+    PYTHONPATH 以外の方法
+
+    `setup.py` というファイルを書いて、一般的なインストールできるパッケージの形にすると、
+    `python setup.py develop` で Python の検索パスに現在のディレクトリを追加します。
+
+    また、 `py.test --genscript=runtests.py` でテストを実行するスクリプトを生成し、
+    その先頭で次のように検索パスを追加しても良いでしょう。 ::
+
+        import sys, os
+        sys.path.insert(0, os.path.dirname(__file__))
+
+IDD
+^^^^^
+
+モデルやアクションを書く前にテストを書くTDDをするためには、まずモデルやレスポンスオブジェクトのAPIを覚えないといけません。
+
+初心者のうちは、インタラクティブシェルで触ってみて、コードを書いて、インタラクティブシェルで動作を確認して、
+その結果をテストにするというインタラクティブシェル駆動開発を行えば、APIを覚えながら開発ができます。
