@@ -10,7 +10,7 @@ class Entry(db.Model):
     text = Column(Text)
 
     def __repr__(self):
-        return "<Entry id={} title='{}'>".format(self.id, self.title)
+        return "<Entry id={} title={!r}>".format(self.id, self.title)
 
 
 def init():
