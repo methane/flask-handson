@@ -81,7 +81,8 @@ flaskr/
 </div>
 <div class="section" id="run-py">
 <h4>run.py<a class="headerlink" href="#run-py" title="Permalink to this headline">¶</a></h4>
-<p>デバッグモードでアプリケーションを起動するだけのスクリプトです。</p>
+<p>デバッグモードでアプリケーションを起動するだけのスクリプトです。
+(<a class="reference external" href="src/flaskr/run.py">ダウンロード</a>)</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="c">#!/usr/bin/env python</span>
 <span class="kn">from</span> <span class="nn">flaskr</span> <span class="kn">import</span> <span class="n">app</span>
 <span class="n">app</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">debug</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
@@ -95,7 +96,8 @@ flaskr/
 この場合 <cite>flaskr/__init__.py</cite> は <cite>flaskr</cite> というパッケージになり、
 <cite>flaskr/config.py</cite> は <cite>flaskr.config</cite> モジュールになります。</p>
 <p><cite>flaskr/__init__.py</cite> は <cite>app</cite> オブジェクトの生成とプラグインのセットアップをし、
-最後に <cite>views</cite> を読み込みます。</p>
+最後に <cite>views</cite> を読み込みます。
+(<a class="reference external" href="src/flaskr/flaskr/__init__.py">ダウンロード</a>)</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">flask</span> <span class="kn">import</span> <span class="n">Flask</span>
 <span class="kn">from</span> <span class="nn">flask.ext.sqlalchemy</span> <span class="kn">import</span> <span class="n">SQLAlchemy</span>
 
@@ -114,14 +116,15 @@ flaskr/
 &#8220;ドライバ名://ホスト名/db名?オプション=値&#8221; という URI 形式で利用するデータベースを指定します。
 今回は sqlite を使うので、ドライバ名は sqlite, ホスト名は空、db名はファイル名になります。</p>
 <p><cite>SECRET_KEY</cite> は、セッション情報を暗号化するための鍵です。
-Flask はデフォルトではセッション情報を全て Cookie に保存するので、改ざん対策のために暗号化しています。</p>
+Flask はデフォルトではセッション情報を全て Cookie に保存するので、改ざん対策のために暗号化しています。
+(<a class="reference external" href="src/flaskr/flaskr/config.py">ダウンロード</a>)</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">SQLALCHEMY_DATABASE_URI</span> <span class="o">=</span> <span class="s">&#39;sqlite:///flaskr.db&#39;</span>
 <span class="n">SECRET_KEY</span><span class="o">=</span><span class="s">&quot;secret key&quot;</span>
 </pre></div>
 </div>
 </div>
-<div class="section" id="id3">
-<h4>その他<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="id6">
+<h4>その他<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h4>
 <p>flaskr/views.py と flaskr/models.py はこれから実装していくので、
 いまは空にしておいてください。 views にはアクションを、 models には
 モデルを書いていきます。</p>
@@ -133,7 +136,7 @@ static には CSS などの静的ファイルを格納していきます。</p>
 <div class="section" id="step-1-model">
 <h2>Step 1: model<a class="headerlink" href="#step-1-model" title="Permalink to this headline">¶</a></h2>
 <p>スキーマを定義するだけのモデルクラスを作ります。</p>
-<p>flaskr/models.py:</p>
+<p>flaskr/models.py (<a class="reference external" href="src/flaskr/flaskr/models.py">ダウンロード</a>):</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="c"># coding: utf-8</span>
 <span class="kn">from</span> <span class="nn">flaskr</span> <span class="kn">import</span> <span class="n">db</span>
 <span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="o">*</span>
@@ -194,7 +197,7 @@ SQLAlchemy は Unit of Work というスタイルの O/R マッパーで、取�
 <div class="section" id="step-2-view">
 <h2>Step 2: view<a class="headerlink" href="#step-2-view" title="Permalink to this headline">¶</a></h2>
 <p>Blog エントリの一覧と投稿ができるように、 flaskr/views.py を実装していきます。</p>
-<p>flaskr/views.py:</p>
+<p>flaskr/views.py (<a class="reference external" href="src/flaskr/flaskr/views.py">ダウンロード</a>):</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">flask</span>
 <span class="kn">from</span> <span class="nn">flaskr</span> <span class="kn">import</span> <span class="n">app</span><span class="p">,</span> <span class="n">db</span>
 <span class="kn">from</span> <span class="nn">flaskr.models</span> <span class="kn">import</span> <span class="n">Entry</span>
@@ -222,7 +225,8 @@ SQLAlchemy は Unit of Work というスタイルの O/R マッパーで、取�
 </div>
 <div class="section" id="step-3-css">
 <h2>Step 3: テンプレートとCSSを用意する<a class="headerlink" href="#step-3-css" title="Permalink to this headline">¶</a></h2>
-<p>flaskr/templates/show_entries.html:</p>
+<p>flaskr/templates/show_entries.html
+(<a class="reference external" href="src/flaskr/flaskr/templates/show_entries.html">ダウンロード</a>):</p>
 <div class="highlight-python"><pre>&lt;!doctype html&gt;
 &lt;html&gt;
 &lt;head&gt;
@@ -257,7 +261,8 @@ SQLAlchemy は Unit of Work というスタイルの O/R マッパーで、取�
 </pre>
 </div>
 <p>CSS も用意しましょう.</p>
-<p>flaskr/static/style.css:</p>
+<p>flaskr/static/style.css
+(<a class="reference external" href="src/flaskr/flaskr/static/style.css">ダウンロード</a>):</p>
 <div class="highlight-python"><pre>body            { font-family: sans-serif; background: #eee; }
 a, h1, h2       { color: #377BA8; }
 h1, h2          { font-family: 'Georgia', serif; margin: 0; }
@@ -285,8 +290,8 @@ h2              { font-size: 1.2em; }
 </div>
 <div class="section" id="step-4">
 <h2>Step 4: テスト<a class="headerlink" href="#step-4" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="id4">
-<h3>インタラクティブシェル<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id11">
+<h3>インタラクティブシェル<a class="headerlink" href="#id11" title="Permalink to this headline">¶</a></h3>
 <p>まずはインタラクティブシェルからリクエストを実行してみましょう.</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">flaskr</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">flaskr</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">test_client</span><span class="p">()</span>
@@ -332,19 +337,40 @@ h2              { font-size: 1.2em; }
 <h3>py.test のインストール<a class="headerlink" href="#py-test" title="Permalink to this headline">¶</a></h3>
 <p>Python の標準ライブラリにも unittest モジュールがありますが、より簡単にテストを書ける
 <cite>pytest</cite> を使いましょう。</p>
-<div class="highlight-python"><pre>(Unix) $ pip install pytest</pre>
+<div class="highlight-python"><pre>$ pip install pytest</pre>
 </div>
 </div>
-<div class="section" id="id5">
-<h3>テストを書く<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id12">
+<h3>テストを書く<a class="headerlink" href="#id12" title="Permalink to this headline">¶</a></h3>
 <p>py.test は、 <cite>*_test</cite> や <cite>test_*</cite> という名前のモジュールを検索して、その中の
 <cite>test_*</cite> という名前の関数や <cite>Test*</cite> といった名前のクラスを検索し実行します。</p>
 <p>py.test を使う場合、 <cite>assertEqual</cite> などの assert メソッドを利用しなくても、
 python の <cite>assert</cite> 文を使うだけで十分です。
 たくさんのメソッドを覚える必要が無いので楽ちんです。</p>
 <p>先ほどインタラクティブシェルで試したログを見ながらテストを書いていきます。</p>
-<p>flaskr/tests/test_actions.py:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">flaskr</span>
+<p>flaskr/tests/test_actions.py
+(<a class="reference external" href="src/flaskr/flaskr/tests/test_actions.py">ダウンロード</a>):</p>
+<div class="highlight-python"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21</pre></div></td><td class="code"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">flaskr</span>
 <span class="kn">from</span> <span class="nn">flaskr</span> <span class="kn">import</span> <span class="n">app</span>
 <span class="kn">from</span> <span class="nn">flaskr.models</span> <span class="kn">import</span> <span class="n">Entry</span>
 
@@ -366,10 +392,10 @@ python の <cite>assert</cite> 文を使うだけで十分です。
         <span class="n">entry</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="s">&#39;test title 1&#39;</span>
         <span class="n">entry</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="s">&#39;test text 1&#39;</span>
 </pre></div>
+</td></tr></table></div>
 </div>
-</div>
-<div class="section" id="id6">
-<h3>実行する<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id14">
+<h3>実行する<a class="headerlink" href="#id14" title="Permalink to this headline">¶</a></h3>
 <p><cite>py.test</cite> を実行すると、テストファイルを見つけた場所でテストを実行するので、
 <cite>import flaskr</cite> が失敗してしまいます。
 プロジェクトのトップディレクトリを検索パスに追加するために <span class="target" id="index-0"></span><tt class="xref std std-envvar docutils literal"><span class="pre">PYTHONPATH</span></tt>
@@ -420,7 +446,7 @@ flaskr/tests/test_actions.py .
 <li><a class="reference internal" href="#run-py">run.py</a></li>
 <li><a class="reference internal" href="#flaskr-init-py">flaskr/__init__.py</a></li>
 <li><a class="reference internal" href="#flaskr-config-py">flaskr/config.py</a></li>
-<li><a class="reference internal" href="#id3">その他</a></li>
+<li><a class="reference internal" href="#id6">その他</a></li>
 </ul>
 </li>
 </ul>
@@ -429,10 +455,10 @@ flaskr/tests/test_actions.py .
 <li><a class="reference internal" href="#step-2-view">Step 2: view</a></li>
 <li><a class="reference internal" href="#step-3-css">Step 3: テンプレートとCSSを用意する</a></li>
 <li><a class="reference internal" href="#step-4">Step 4: テスト</a><ul>
-<li><a class="reference internal" href="#id4">インタラクティブシェル</a></li>
+<li><a class="reference internal" href="#id11">インタラクティブシェル</a></li>
 <li><a class="reference internal" href="#py-test">py.test のインストール</a></li>
-<li><a class="reference internal" href="#id5">テストを書く</a></li>
-<li><a class="reference internal" href="#id6">実行する</a></li>
+<li><a class="reference internal" href="#id12">テストを書く</a></li>
+<li><a class="reference internal" href="#id14">実行する</a></li>
 <li><a class="reference internal" href="#idd">IDD</a></li>
 </ul>
 </li>
