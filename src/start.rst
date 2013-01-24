@@ -39,8 +39,7 @@ Hello, World!
 ===============
 
 Flask は簡単なWebアプリなら1ファイルで全て実装できます。
-
-`ダウンロード <src/hello.py>`_
+(`ダウンロード <src/hello.py>`_)
 
 .. literalinclude:: hello.py
     :linenos:

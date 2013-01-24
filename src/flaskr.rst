@@ -41,6 +41,7 @@ run.py
 ^^^^^^^
 
 デバッグモードでアプリケーションを起動するだけのスクリプトです。
+(`ダウンロード <src/flaskr/run.py>`_)
 
 .. literalinclude:: flaskr/run.py
 
@@ -54,6 +55,7 @@ Python では `__init__.py` というファイルを含むディレクトリが�
 
 `flaskr/__init__.py` は `app` オブジェクトの生成とプラグインのセットアップをし、
 最後に `views` を読み込みます。
+(`ダウンロード <src/flaskr/flaskr/__init__.py>`_)
 
 .. literalinclude:: flaskr/flaskr/__init__.py
 
@@ -68,6 +70,7 @@ flaskr/config.py
 
 `SECRET_KEY` は、セッション情報を暗号化するための鍵です。
 Flask はデフォルトではセッション情報を全て Cookie に保存するので、改ざん対策のために暗号化しています。
+(`ダウンロード <src/flaskr/flaskr/config.py>`_)
 
 .. literalinclude:: flaskr/flaskr/config.py
 
@@ -86,7 +89,7 @@ Step 1: model
 
 スキーマを定義するだけのモデルクラスを作ります。
 
-flaskr/models.py:
+flaskr/models.py (`ダウンロード <src/flaskr/flaskr/models.py>`_):
 
 .. literalinclude:: flaskr/flaskr/models.py
 
@@ -133,7 +136,7 @@ Step 2: view
 
 Blog エントリの一覧と投稿ができるように、 flaskr/views.py を実装していきます。
 
-flaskr/views.py:
+flaskr/views.py (`ダウンロード <src/flaskr/flaskr/views.py>`_):
 
 .. literalinclude:: flaskr/flaskr/views.py
 
@@ -143,13 +146,15 @@ Step 3: テンプレートとCSSを用意する
 
 .. Flask は Jinja2 というテンプレートエンジンを使います。
 
-flaskr/templates/show_entries.html:
+flaskr/templates/show_entries.html
+(`ダウンロード <src/flaskr/flaskr/templates/show_entries.html>`_):
 
 .. literalinclude:: flaskr/flaskr/templates/show_entries.html
 
 CSS も用意しましょう.
 
-flaskr/static/style.css:
+flaskr/static/style.css
+(`ダウンロード <src/flaskr/flaskr/static/style.css>`_):
 
 .. literalinclude:: flaskr/flaskr/static/style.css
 
@@ -226,7 +231,7 @@ Python の標準ライブラリにも unittest モジュールがありますが
 
 ::
 
-    (Unix) $ pip install pytest
+    $ pip install pytest
 
 テストを書く
 -------------
@@ -240,29 +245,11 @@ python の `assert` 文を使うだけで十分です。
 
 先ほどインタラクティブシェルで試したログを見ながらテストを書いていきます。
 
-flaskr/tests/test_actions.py::
+flaskr/tests/test_actions.py
+(`ダウンロード <src/flaskr/flaskr/tests/test_actions.py>`_):
 
-    import flaskr
-    from flaskr import app
-    from flaskr.models import Entry
-
-    def setup_module():
-        flaskr.db.drop_all()
-        flaskr.models.init()
-
-    def test_post_entry():
-        client = app.test_client()
-        response = client.post('/add',
-                               data={'title': 'test title 1', 'text': 'test text 1'},
-                               follow_redirects=True)
-        assert response.status_code == 200
-        assert "test title 1" in response.data
-        assert "test text 1" in response.data
-        with app.test_request_context():
-            assert Entry.query.count() == 1
-            entry = Entry.query.get(1)
-            entry.title = 'test title 1'
-            entry.text = 'test text 1'
+.. literalinclude:: flaskr/flaskr/tests/test_actions.py
+    :linenos:
 
 実行する
 ----------
