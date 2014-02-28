@@ -66,7 +66,7 @@ flaskr/__init__.py::
 
     auth = GoogleAuth(app)
     #klab.com ドメインの Google Apps で認証する場合は GoogleFederated を使う
-    #auth = GoogleFederated(app, 'klab.com')
+    #auth = GoogleFederated('klab.com', app)
 
 view から使う
 ^^^^^^^^^^^^^^

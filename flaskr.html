@@ -1,4 +1,3 @@
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -14,7 +13,7 @@
     
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '',
+        URL_ROOT:    './',
         VERSION:     '1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
@@ -62,7 +61,8 @@
 <div class="section" id="id1">
 <h3>インストール<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
 <p>Flask-SQLAlchemy という Flask 拡張をインストールします。</p>
-<div class="highlight-python"><pre>$ pip install Flask-SQLAlchemy</pre>
+<div class="highlight-python"><div class="highlight"><pre>$ pip install Flask-SQLAlchemy
+</pre></div>
 </div>
 </div>
 <div class="section" id="id2">
@@ -70,14 +70,15 @@
 <p>Hello, World プログラムでは1ファイルで完結していましたが、今回は少しファイルを分けて、
 本格的な構成にしていきます。</p>
 <p>まず、適当なディレクトリの中に次のようにファイルとディレクトリを作っていきます:</p>
-<div class="highlight-python"><pre>run.py
+<div class="highlight-python"><div class="highlight"><pre>run.py
 flaskr/
     __init__.py
     config.py
     views.py
     models.py
     templates/
-    static/</pre>
+    static/
+</pre></div>
 </div>
 <div class="section" id="run-py">
 <h4>run.py<a class="headerlink" href="#run-py" title="Permalink to this headline">¶</a></h4>
@@ -157,7 +158,8 @@ static には CSS などの静的ファイルを格納していきます。</p>
 </pre></div>
 </div>
 <p>実際にデータベースとテーブルを作ります:</p>
-<div class="highlight-python"><pre>python -c "import flaskr.models; flaskr.models.init()"</pre>
+<div class="highlight-python"><div class="highlight"><pre>python -c &quot;import flaskr.models; flaskr.models.init()&quot;
+</pre></div>
 </div>
 <p>インタラクティブシェルでモデルを触って見ましょう.
 SQLAlchemy は Unit of Work というスタイルの O/R マッパーで、取得したエンティティは自動的に「セッション」に紐づけられます。
@@ -227,11 +229,11 @@ SQLAlchemy は Unit of Work というスタイルの O/R マッパーで、取�
 <h2>Step 3: テンプレートとCSSを用意する<a class="headerlink" href="#step-3-css" title="Permalink to this headline">¶</a></h2>
 <p>flaskr/templates/show_entries.html
 (<a class="reference external" href="src/flaskr/flaskr/templates/show_entries.html">ダウンロード</a>):</p>
-<div class="highlight-python"><pre>&lt;!doctype html&gt;
+<div class="highlight-python"><div class="highlight"><pre>&lt;!doctype html&gt;
 &lt;html&gt;
 &lt;head&gt;
     &lt;title&gt;Flaskr&lt;/title&gt;
-    &lt;link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css') }}"&gt;
+    &lt;link rel=stylesheet type=text/css href=&quot;{{ url_for(&#39;static&#39;, filename=&#39;style.css&#39;) }}&quot;&gt;
 &lt;/head&gt;
 &lt;body&gt;
     &lt;div class=page&gt;
@@ -239,7 +241,7 @@ SQLAlchemy は Unit of Work というスタイルの O/R マッパーで、取�
       {% for message in get_flashed_messages() %}
         &lt;div class=flash&gt;{{ message }}&lt;/div&gt;
       {% endfor %}
-      &lt;form action="{{ url_for('add_entry') }}" method=post class=add-entry&gt;
+      &lt;form action=&quot;{{ url_for(&#39;add_entry&#39;) }}&quot; method=post class=add-entry&gt;
         &lt;dl&gt;
           &lt;dt&gt;Title:
           &lt;dd&gt;&lt;input type=text size=30 name=title&gt;
@@ -258,14 +260,14 @@ SQLAlchemy は Unit of Work というスタイルの O/R マッパーで、取�
     &lt;/div&gt;
 &lt;/body&gt;
 &lt;/html&gt;
-</pre>
+</pre></div>
 </div>
 <p>CSS も用意しましょう.</p>
 <p>flaskr/static/style.css
 (<a class="reference external" href="src/flaskr/flaskr/static/style.css">ダウンロード</a>):</p>
-<div class="highlight-python"><pre>body            { font-family: sans-serif; background: #eee; }
+<div class="highlight-python"><div class="highlight"><pre>body            { font-family: sans-serif; background: #eee; }
 a, h1, h2       { color: #377BA8; }
-h1, h2          { font-family: 'Georgia', serif; margin: 0; }
+h1, h2          { font-family: &#39;Georgia&#39;, serif; margin: 0; }
 h1              { border-bottom: 2px solid #eee; }
 h2              { font-size: 1.2em; }
 
@@ -281,10 +283,11 @@ h2              { font-size: 1.2em; }
 .flash          { background: #CEE5F5; padding: 0.5em;
                   border: 1px solid #AACBE2; }
 .error          { background: #F0D6D6; padding: 0.5em; }
-</pre>
+</pre></div>
 </div>
 <p>これでひとまず完成です。</p>
-<div class="highlight-python"><pre>$ python run.py</pre>
+<div class="highlight-python"><div class="highlight"><pre>$ python run.py
+</pre></div>
 </div>
 <p>で実行して、ブラウザで動いていることを確認してみましょう。</p>
 </div>
@@ -337,7 +340,8 @@ h2              { font-size: 1.2em; }
 <h3>py.test のインストール<a class="headerlink" href="#py-test" title="Permalink to this headline">¶</a></h3>
 <p>Python の標準ライブラリにも unittest モジュールがありますが、より簡単にテストを書ける
 <cite>pytest</cite> を使いましょう。</p>
-<div class="highlight-python"><pre>$ pip install pytest</pre>
+<div class="highlight-python"><div class="highlight"><pre>$ pip install pytest
+</pre></div>
 </div>
 </div>
 <div class="section" id="id12">
@@ -400,14 +404,15 @@ python の <cite>assert</cite> 文を使うだけで十分です。
 <cite>import flaskr</cite> が失敗してしまいます。
 プロジェクトのトップディレクトリを検索パスに追加するために <span class="target" id="index-0"></span><tt class="xref std std-envvar docutils literal"><span class="pre">PYTHONPATH</span></tt>
 を使いましょう。</p>
-<div class="highlight-python"><pre>$ PYTHONPATH=. py.test
+<div class="highlight-python"><div class="highlight"><pre>$ PYTHONPATH=. py.test
 ================================== test session starts ===================================
 platform darwin -- Python 2.7.3 -- pytest-2.3.4
 collected 1 items
 
 flaskr/tests/test_actions.py .
 
-================================ 1 passed in 0.20 seconds ================================</pre>
+================================ 1 passed in 0.20 seconds ================================
+</pre></div>
 </div>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
@@ -506,7 +511,7 @@ flaskr/tests/test_actions.py .
     </div>
     <div class="footer">
         &copy; Copyright 2013, INADA Naoki.
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.1.
     </div>
   </body>
 </html>
