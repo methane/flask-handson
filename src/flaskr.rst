@@ -97,7 +97,7 @@ flaskr/models.py (`ダウンロード <src/flaskr/flaskr/models.py>`_):
 
     python -c "import flaskr.models; flaskr.models.init()"
 
-インタラクティブシェルでモデルを触って見ましょう.
+インタラクティブシェルでモデルを触ってみましょう.
 SQLAlchemy は Unit of Work というスタイルの O/R マッパーで、取得したエンティティは自動的に「セッション」に紐づけられます。
 エンティティを操作したあとに `db.session.commit()` することで、変更がDBに反映されます。
 新規にエンティティを作成する場合は、 `db.session.add(entity)` でセッションに紐づけます。

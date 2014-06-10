@@ -8,8 +8,8 @@
     
     <title>flaskr &mdash; Flask Handson 1 documentation</title>
     
-    <link rel="stylesheet" href="static/nature.css" type="text/css" />
-    <link rel="stylesheet" href="static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
@@ -20,9 +20,9 @@
         HAS_SOURCE:  true
       };
     </script>
-    <script type="text/javascript" src="static/jquery.js"></script>
-    <script type="text/javascript" src="static/underscore.js"></script>
-    <script type="text/javascript" src="static/doctools.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="top" title="Flask Handson 1 documentation" href="index.html" />
     <link rel="next" title="Flask を使いこなそう" href="advanced.html" />
     <link rel="prev" title="Flask を始めよう" href="start.html" /> 
@@ -161,7 +161,7 @@ static には CSS などの静的ファイルを格納していきます。</p>
 <div class="highlight-python"><div class="highlight"><pre>python -c &quot;import flaskr.models; flaskr.models.init()&quot;
 </pre></div>
 </div>
-<p>インタラクティブシェルでモデルを触って見ましょう.
+<p>インタラクティブシェルでモデルを触ってみましょう.
 SQLAlchemy は Unit of Work というスタイルの O/R マッパーで、取得したエンティティは自動的に「セッション」に紐づけられます。
 エンティティを操作したあとに <cite>db.session.commit()</cite> することで、変更がDBに反映されます。
 新規にエンティティを作成する場合は、 <cite>db.session.add(entity)</cite> でセッションに紐づけます。</p>
@@ -511,7 +511,7 @@ flaskr/tests/test_actions.py .
     </div>
     <div class="footer">
         &copy; Copyright 2013, INADA Naoki.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.1.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
     </div>
   </body>
 </html>
