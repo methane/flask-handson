@@ -275,7 +275,7 @@ flaskr/tests/test_actions.py
     PYTHONPATH 以外の方法
 
     `setup.py` というファイルを書いて、一般的なインストールできるパッケージの形にすると、
-    `python setup.py develop` で Python の検索パスに現在のディレクトリを追加します。
+    `python setup.py develop` で Python の検索パスに現在のディレクトリを追加されます。
 
     また、 `py.test --genscript=runtests.py` でテストを実行するスクリプトを生成し、
     その先頭で次のように検索パスを追加しても良いでしょう。 ::
