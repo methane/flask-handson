@@ -161,7 +161,7 @@ static には CSS などの静的ファイルを格納していきます。</p>
 <div class="highlight-python"><div class="highlight"><pre>python -c &quot;import flaskr.models; flaskr.models.init()&quot;
 </pre></div>
 </div>
-<p>インタラクティブシェルでモデルを触って見ましょう.
+<p>インタラクティブシェルでモデルを触ってみましょう.
 SQLAlchemy は Unit of Work というスタイルの O/R マッパーで、取得したエンティティは自動的に「セッション」に紐づけられます。
 エンティティを操作したあとに <cite>db.session.commit()</cite> することで、変更がDBに反映されます。
 新規にエンティティを作成する場合は、 <cite>db.session.add(entity)</cite> でセッションに紐づけます。</p>
@@ -418,7 +418,7 @@ flaskr/tests/test_actions.py .
 <p class="first admonition-title">Note</p>
 <p>PYTHONPATH 以外の方法</p>
 <p><cite>setup.py</cite> というファイルを書いて、一般的なインストールできるパッケージの形にすると、
-<cite>python setup.py develop</cite> で Python の検索パスに現在のディレクトリを追加します。</p>
+<cite>python setup.py develop</cite> で Python の検索パスに現在のディレクトリを追加されます。</p>
 <p>また、 <cite>py.test &#8211;genscript=runtests.py</cite> でテストを実行するスクリプトを生成し、
 その先頭で次のように検索パスを追加しても良いでしょう。</p>
 <div class="last highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">sys</span><span class="o">,</span> <span class="nn">os</span>
