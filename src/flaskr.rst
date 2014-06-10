@@ -192,7 +192,7 @@ Step 4: テスト
     200
     >>> response.status
     '200 OK'
-    >>> print response.data
+    >>> print(response.data)
     <!doctype html>
     <html>
     <head>

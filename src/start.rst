@@ -8,24 +8,23 @@ Flask を始めよう
 Python
 --------
 
-Python 自体のインストール方法は、
+Python 2.7 か Python 3.3 以降を用意します。
+`pip` コマンドも実行できるようにしておいてください。
+
+手順は
 http://phpy.readthedocs.org/en/latest/install.html
 を参照してください。
 
-このドキュメントでは外部パッケージのインストールに pip というコマンドを利用しています。
-Windows の場合、 ::
-
-    > python -m easy_install pip
-
-で pip をインストールするか、 ``pip install パッケージ名`` となっている部分を
-``python -m easy_install パッケージ名`` に読み替えてください。
 
 Flask
 -----
 
-Flask もインストールしておきます。 ::
+まずは Flask をインストールしておきます。 ::
 
     $ pip install Flask
+
+インストールが失敗した場合は、もう一度上記のドキュメントを参考にして
+環境を確認してください。
 
 テキストエディタ
 -----------------
