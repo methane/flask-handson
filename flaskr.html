@@ -393,8 +393,8 @@ python の <cite>assert</cite> 文を使うだけで十分です。
     <span class="k">with</span> <span class="n">app</span><span class="o">.</span><span class="n">test_request_context</span><span class="p">():</span>
         <span class="k">assert</span> <span class="n">Entry</span><span class="o">.</span><span class="n">query</span><span class="o">.</span><span class="n">count</span><span class="p">()</span> <span class="o">==</span> <span class="mi">1</span>
         <span class="n">entry</span> <span class="o">=</span> <span class="n">Entry</span><span class="o">.</span><span class="n">query</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-        <span class="n">entry</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="s">&#39;test title 1&#39;</span>
-        <span class="n">entry</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="s">&#39;test text 1&#39;</span>
+        <span class="k">assert</span> <span class="n">entry</span><span class="o">.</span><span class="n">title</span> <span class="o">==</span> <span class="s">&#39;test title 1&#39;</span>
+        <span class="k">assert</span> <span class="n">entry</span><span class="o">.</span><span class="n">text</span> <span class="o">==</span> <span class="s">&#39;test text 1&#39;</span>
 </pre></div>
 </td></tr></table></div>
 </div>
