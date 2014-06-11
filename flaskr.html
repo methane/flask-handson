@@ -243,18 +243,18 @@ SQLAlchemy は Unit of Work というスタイルの O/R マッパーで、取�
       {% endfor %}
       &lt;form action=&quot;{{ url_for(&#39;add_entry&#39;) }}&quot; method=post class=add-entry&gt;
         &lt;dl&gt;
-          &lt;dt&gt;Title:
-          &lt;dd&gt;&lt;input type=text size=30 name=title&gt;
-          &lt;dt&gt;Text:
-          &lt;dd&gt;&lt;textarea name=text rows=5 cols=40&gt;&lt;/textarea&gt;
-          &lt;dd&gt;&lt;input type=submit value=Share&gt;
+          &lt;dt&gt;Title:&lt;/dt&gt;
+          &lt;dd&gt;&lt;input type=text size=30 name=title&gt;&lt;/dd&gt;
+          &lt;dt&gt;Text:&lt;/dt&gt;
+          &lt;dd&gt;&lt;textarea name=text rows=5 cols=40&gt;&lt;/textarea&gt;&lt;/dd&gt;
+          &lt;dd&gt;&lt;input type=submit value=Share&gt;&lt;/dd&gt;
         &lt;/dl&gt;
       &lt;/form&gt;
       &lt;ul class=entries&gt;
       {% for entry in entries %}
-        &lt;li&gt;&lt;h2&gt;{{ entry.title }}&lt;/h2&gt;{{ entry.text }}
+        &lt;li&gt;&lt;h2&gt;{{ entry.title }}&lt;/h2&gt;{{ entry.text }}&lt;/li&gt;
       {% else %}
-        &lt;li&gt;&lt;em&gt;Unbelievable.  No entries here so far&lt;/em&gt;
+        &lt;li&gt;&lt;em&gt;Unbelievable.  No entries here so far&lt;/em&gt;&lt;/li&gt;
       {% endfor %}
       &lt;/ul&gt;
     &lt;/div&gt;
