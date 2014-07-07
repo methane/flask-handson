@@ -34,58 +34,6 @@ __init__.py という空のファイルも作っておきます。
         __init__.py
         flaskr.py
 
-Flask-GoogleAuth
-------------------
-
-Flask に認証機能を追加するプラグインはいくつかありますが、パスワード認証を使うと
-ユーザーに新しくパスワードを作って管理してもらわないといけないので、
-OpenID などの外部の認証機能を使うプラグインを利用するといいでしょう。
-
-Flask-GoogleAuth は Google アカウントでログインするためのプラグインです。
-社内ユーザー向けのアプリを作りたい場合は、Google Apps のドメインを使うこともできます。
-
-インストール
-^^^^^^^^^^^^^
-
-::
-
-    $ pip install Flask-GoogleAuth
-
-プラグインを組み込む
-^^^^^^^^^^^^^^^^^^^^^^
-
-flaskr/__init__.py::
-
-    from flask import Flask
-    from flask.ext.sqlalchemy import SQLAlchemy
-    from flask.ext.googleauth import (GoogleFederated, GoogleAuth)
-
-    app = Flask(__name__)
-    app.config.from_object('flaskr.config')
-    db = SQLAlchemy(app)
-
-    auth = GoogleAuth(app)
-    #klab.com ドメインの Google Apps で認証する場合は GoogleFederated を使う
-    #auth = GoogleFederated('klab.com', app)
-
-view から使う
-^^^^^^^^^^^^^^
-
-ある view に認証しないとアクセスできないようにするには次のようにします。 ::
-
-    from flaskr import auth, app
-
-    @app.route('/add', methods=['POST'])
-    @auth.required
-    def add_entry():
-        ...
-
-認証された場合、 `flask.g.user` というオブジェクトができます。このオブジェクトには
-`user.email`, `user.name`, `user.first_name`, `user.last_name` という属性があります。
-
-`flask.g` というオブジェクトはデフォルトでテンプレートに渡されるようになっているので、
-テンプレートの中では `{{ g.email }}` のようにしてユーザーの情報を表示することができます。
-
 Flask-Admin
 ------------
 
